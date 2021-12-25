@@ -1,0 +1,22 @@
+﻿ToDo List:
+0. change gameicon
+1. add a fence DONE
+2. basic game mechanics, trunk removing and fix clicking, making one more tree grow every 10 seconds
+3. change mouse
+4. add box with number of clicks and points
+5. limit tree fumigation clicks
+6. add seedlings and inventory
+7. add antifungal spray
+8. add random loot with tree fumigation clicks (bushes, that you have to click on many times)
+9. add start game menu
+10. add pause game on esc
+11. add tree animations
+12. add rain mechanic and optimise new tree growth time
+13. add runnign beavers, that destroy trees and you have to defeat them
+(they attack a tree on the other side of the map and when they attack it a health bar over them appears and it decrease)
+14. shop whick allows you to buy more spray
+15. umbrellas (to be bougth at the shop)
+16. bone meal (to be bougth at the shop)
+16. more animations
+17. make game easily downloadable
+18. optimise game

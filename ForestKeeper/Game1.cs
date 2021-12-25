@@ -7,14 +7,17 @@ namespace ForestKeeper
     public class Game1 : Game
     {
         Texture2D background;
+        Texture2D treeImage;
+        Texture2D infectedImage;
+        Texture2D trunkImage;
         Vector2 gameSize;
+        Engine _engine;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            gameSize = new Vector2(1836,836);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -22,8 +25,10 @@ namespace ForestKeeper
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _graphics.PreferredBackBufferWidth = (int)gameSize.X;
-            _graphics.PreferredBackBufferHeight = (int)gameSize.Y;
+            _engine = new Engine();
+            _graphics.PreferredBackBufferWidth = Constants.gameWidth;
+            _graphics.PreferredBackBufferHeight = Constants.gameHeight;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             base.Initialize();
         }
@@ -31,8 +36,10 @@ namespace ForestKeeper
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            background = Content.Load<Texture2D>("grass");
+            treeImage = Content.Load<Texture2D>("tree1");
+            trunkImage = Content.Load<Texture2D>("trunk");
+            infectedImage = Content.Load<Texture2D>("infected tree");
+            background = Content.Load<Texture2D>("backgroundInGame");
             // TODO: use this.Content to load your game content here
         }
 
@@ -40,9 +47,12 @@ namespace ForestKeeper
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            MouseState _mouseState = Mouse.GetState();
             // TODO: Add your update logic here
-
+            if (_mouseState.LeftButton == ButtonState.Pressed)
+            {
+                _engine.trees.ForEach(t => t.CheckClick(_mouseState.X,_mouseState.Y));
+            }
             base.Update(gameTime);
         }
 
@@ -52,7 +62,40 @@ namespace ForestKeeper
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            _spriteBatch.Draw(background, new Rectangle(0,0,background.Width*2,background.Height*2), Color.White);
+            _spriteBatch.Draw(background, new Rectangle(0,0,Constants.gameWidth,Constants.gameHeight), Color.White);
+            foreach(Tree k in _engine.trees)
+            {
+                switch(k.state)
+                {
+                    case 0: //standing tree
+                        _spriteBatch.Draw(treeImage,
+                            new Rectangle(k.realX,
+                            k.realY,
+                            Constants.TreeWidth,
+                            Constants.TreeHeight
+                            ),
+                            Color.White);
+                        break;
+                    case 1: //infected tree
+                        _spriteBatch.Draw(infectedImage,
+                            new Rectangle(k.realX,
+                            k.realY,
+                            Constants.TreeWidth,
+                            Constants.TreeHeight
+                            ),
+                            Color.White);
+                        break;
+                    case 2: //trunk
+                        _spriteBatch.Draw(trunkImage,
+                            new Rectangle(k.realX,
+                            k.realY,
+                            Constants.TreeWidth,
+                            Constants.TreeHeight
+                            ),
+                            Color.White);
+                        break;
+                }
+            }    
             _spriteBatch.End();
 
             base.Draw(gameTime);
