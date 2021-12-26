@@ -9,11 +9,15 @@ namespace ForestKeeper
     {
         public int state; //0 - standing 1 - infected 2 - trunk 3 - seedling
         public int x, y, realX, realY;
+        public static int Trees;
+        public static int AliveTrees;
         public Tree()
         {
             state = 0;
             x = realX = 0;
             y = realY = 0;
+            Trees += 1;
+            AliveTrees += 1;
         }
         public Tree(int x, int y)
         {
@@ -30,6 +34,7 @@ namespace ForestKeeper
             if (state == 1)
             {
                 state = 2;
+                AliveTrees -= 1;
             }
         }
         public async Task Grow()
@@ -37,9 +42,13 @@ namespace ForestKeeper
             await Task.Delay(3000);
             state = 0;
         }
-        public void Heal()
+        public bool Heal()
         {
-            if (state == 1) state = 0;
+            if (state == 1) {
+                state = 0;
+                return true;
+            }
+            else return false;
         }
         public bool CheckClick(int a, int b)
         {
@@ -48,8 +57,7 @@ namespace ForestKeeper
                 (b>realY) &&
                 (b<realY+Constants.TreeHeight) )
             {
-                Heal();
-                return true;
+                return Heal();
             }
             return false;
         }

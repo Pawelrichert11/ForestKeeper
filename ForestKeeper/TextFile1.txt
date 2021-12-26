@@ -1,7 +1,7 @@
 ﻿ToDo List:
 0. change game icon
 1. add a fence (DONE)
-2. basic game mechanics, trunk removing and fix clicking (DONE), making one more tree grow every 10 seconds
+2. basic game mechanics, trunk removing and fix clicking (DONE),
 3. change mouse
 4. add box with number of clicks and points
 5. limit tree fumigation clicks
@@ -22,3 +22,6 @@
 18. optimise game (change tree data structure)
 19. add sound
 20. update graphics
+21. add game menu and difficulties
+22. write tests
+23. documentation

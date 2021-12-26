@@ -27,6 +27,8 @@ namespace ForestKeeper
                     i++;
                 }
             }
+            Tree.AliveTrees = Constants.NumberOfStartingTrees;
+            Tree.Trees = Constants.NumberOfStartingTrees;
             ///</summary>
         }
         private Tuple<int,int> GenerateRandom() //picks a random tree from an array

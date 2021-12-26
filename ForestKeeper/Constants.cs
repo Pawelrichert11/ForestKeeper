@@ -23,6 +23,14 @@ namespace ForestKeeper
         public static int TreeIntervalX = insideFenceX/TreesHorizontally; //distance between trees horizontally
         public static int NumberOfStartingTrees = 13;
 
-        public static int InfectionSpeed = 1;
+        public static float InfectionSpeed = 1.5f;
+
+        public static Tuple<int, int> ClickPos = new Tuple<int, int>(170, 35);
+        public static Tuple<int, int> PointPos = new Tuple<int, int>(650, 35);
+        public static Tuple<int, int> TimePos = new Tuple<int, int>(1620, 35);
+
+        public static Tuple<int, int> NumberSize = new Tuple<int, int>(45, 90);
+
+
     }
 }
