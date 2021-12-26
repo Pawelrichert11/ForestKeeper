@@ -10,11 +10,13 @@ namespace ForestKeeper
         Texture2D treeImage;
         Texture2D infectedImage;
         Texture2D trunkImage;
-        Vector2 gameSize;
+        Texture2D seedlingImage;
         Engine _engine;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        MouseState lastMouseState;
+        MouseState currentMouseState;
+        float timer = 0;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -38,20 +40,34 @@ namespace ForestKeeper
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             treeImage = Content.Load<Texture2D>("tree1");
             trunkImage = Content.Load<Texture2D>("trunk");
+            seedlingImage = Content.Load<Texture2D>("seedling");
             infectedImage = Content.Load<Texture2D>("infected tree");
             background = Content.Load<Texture2D>("backgroundInGame");
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            MouseState _mouseState = Mouse.GetState();
-            // TODO: Add your update logic here
-            if (_mouseState.LeftButton == ButtonState.Pressed)
+            lastMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+            if (currentMouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
             {
-                _engine.trees.ForEach(t => t.CheckClick(_mouseState.X,_mouseState.Y));
+                if (currentMouseState.X>Constants.GameBorderLeft&&
+                    currentMouseState.X<Constants.insideFenceX + Constants.GameBorderLeft&&
+                    currentMouseState.Y>Constants.GameBorderTop&&
+                    currentMouseState.Y<Constants.GameBorderTop + Constants.insideFenceY
+                    )
+                {
+                    //to be optimised by changing List of trees into an array of trees
+                    _engine.trees.ForEach(t => t.CheckClick(currentMouseState.X, currentMouseState.Y));
+                }
+            }
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if(timer>3)
+            {
+                timer = 0;
+               _engine.InfectATree();
             }
             base.Update(gameTime);
         }
@@ -91,6 +107,15 @@ namespace ForestKeeper
                             k.realY,
                             Constants.TreeWidth,
                             Constants.TreeHeight
+                            ),
+                            Color.White);
+                        break;
+                    case 3: //seedling
+                        _spriteBatch.Draw(seedlingImage,
+                            new Rectangle(k.realX+ Constants.SeedlingWidth/2,
+                            k.realY + Constants.SeedlingHeight/2,
+                            Constants.SeedlingWidth,
+                            Constants.SeedlingHeight
                             ),
                             Color.White);
                         break;

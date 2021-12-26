@@ -41,5 +41,17 @@ namespace ForestKeeper
         {
             return _random.Next(n);
         }
+        public bool InfectATree()
+        {
+            int i = PickATree();
+            int a = i;
+            while(trees[a].state!=0)
+            {
+                a = (a + 1) % trees.Count;
+                if (a == i) return false;
+            }
+            trees[a].Infect();
+            return true;
+        }
     }
 }
